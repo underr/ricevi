@@ -1,4 +1,6 @@
 var express = require('express');
+var Chance = require('chance');
+var chance = new Chance();
 var router = express.Router();
 var knex = require('knex')({
   client: 'sqlite3',
@@ -41,9 +43,10 @@ router.get('/id/:id', function(req, res) {
     });
 });
 
-var total; // bad practice, I know
+var total = 1; // first request after restarting will always return the 1nd item
 
 router.get('/random', function(req, res) {
+  randomNumber = chance.natural({min: 1, max: total});
   knex.count('rowid')
     .table('ricevi')
     .then(function(rows) {
@@ -56,7 +59,24 @@ router.get('/random', function(req, res) {
 
   knex.select('id','time', 'data')
     .from('ricevi')
-    .where('id', '=', randomInt(1, total))
+    .where('id', '=', randomNumber)
+    .then(function(rows) {
+      var rdata = {
+        'time': rows[0].time,
+        'data': rows[0].data
+      }
+      res.json(rdata);
+    })
+    .catch(function(error) {
+      console.error(error);
+      res.json({'info': 'Error when requesting', 'lucky number': randomNumber});
+    });
+});
+
+router.get('/privata/:secret', function(req, res) {
+  knex.select('id','time','data')
+    .from('privata')
+    .where('secret', '=', req.params.secret)
     .then(function(rows) {
       var rdata = {
         'time': rows[0].time,

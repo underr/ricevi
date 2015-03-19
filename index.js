@@ -3,21 +3,9 @@ var config = require('./config');
 if (config.LOGS)
   var morgan = require('morgan');
 var bodyParser = require('body-parser');
-var knex = require('knex')({
-  client: config.CLIENT,
-  connection: config.CONNECTION
-});
 
-knex.schema.hasTable('ricevi').then(function(exists) {
-  if (!exists) {
-    return knex.schema.createTable('ricevi', function(t) {
-      t.increments('id').primary();
-      t.string('ip', 39) // 39 chars because IPV6 IPs
-      t.string('time', 100);
-      t.string('data', config.CONTENT_LIMIT);
-    });
-  }
-});
+
+require('./db'); // Initialize database
 
 if (config.LOGS)
   app.use(morgan('short'));
