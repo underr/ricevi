@@ -11,8 +11,21 @@ Receive and send things
 
 Copy `config.example.js` to `config.js`, configure it and run `node .`
 
-## Privata
+## API Paths
 
-You can send private data at `/sendi/privata` (only param is **data** which is a string), you'll get a secret key after sending it.
+### Ricevi
 
-Use it at `/ricevi/privata/`**<id>**. For example, `http://localhost:5000/ricevi/privata/TsSfUXc8sL5tMxmiWqzd1um58hIFO3`
+`/ricevi` will return items in alphabetical order.
+
+`/ricevi/random` will return a random item.
+
+`/ricevi/id/${id}` will return given ID item
+
+### Sendi
+
+`/sendi` only takes a **data** parameter, which may contain a string. You can send it with curl, for example: `curl -d "data=Testing" http://localhost:5000/sendi`
+
+### Privata
+You can send private data at `/sendi/privata`, you'll get a secret key after sending it.
+
+Receive it at `/ricevi/privata/${secret key}`. For example, `http://localhost:5000/ricevi/privata/TsSfUXc8sL5tMxmiWqzd1um58hIFO3`
