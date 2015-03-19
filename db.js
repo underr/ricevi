@@ -27,13 +27,3 @@ knex.schema.hasTable('privata').then(function(exists) {
     });
   }
 });
-
-knex.count('rowid')
-  .table('ricevi')
-  .then(function(rows) {
-    if (rows[0]['count("rowid")'] === 0) {
-      module.exports.total = 1
-    } else {
-      module.exports.total = rows[0]['count("rowid")']
-    }
-});
