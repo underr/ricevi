@@ -4,9 +4,7 @@ if (config.LOGS)
   var morgan = require('morgan');
 var bodyParser = require('body-parser');
 
-
-require('./db'); // Initialize database
-
+// Middleware
 if (config.LOGS)
   app.use(morgan('short'));
 app.enable('trust proxy');
@@ -18,10 +16,12 @@ app.use(function(req, res, next) { // CORS
   next();
 });
 
+// Routes
 app.use('/', require('./routes/index'));
 app.use('/ricevi', require('./routes/ricevi'));
 app.use('/sendi', require('./routes/sendi'));
 
+// 404 handling
 app.use(function(req, res, next){
   res.status(404).json({'status': '404'});
 });
