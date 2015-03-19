@@ -1,7 +1,7 @@
 {
   "name": "ricevi",
   "version": "1.0.0",
-  "description": "Receives and sends things",
+  "description": "Receive and send things",
   "main": "index.js",
   "author": "underr",
   "license": "wtfpl",
